@@ -1,5 +1,18 @@
 // All the information the site shows, kept in one place so it is easy to edit.
 // Hotel names are well-known examples; always check prices and availability.
+//
+// Each place has:
+//   vibe    - what kind of trip it suits (see VIBES below)
+//   outdoor - true if you spend most of the visit outside (matters when it's hot)
+//   months  - the best months to go (1 = January ... 12 = December)
+
+const VIBES = {
+  culture: "Culture & history",
+  food: "Markets & food",
+  beach: "Beaches & sea",
+  nature: "Desert & nature",
+  city: "City & shopping"
+};
 
 const COUNTRIES = [
   {
@@ -10,9 +23,9 @@ const COUNTRIES = [
     lon: 47.9774,
     airport: "KWI",
     places: [
-      { name: "Kuwait Towers", city: "Kuwait City", text: "The country's famous landmark, with views over the Gulf. Best visited in the evening." },
-      { name: "Souq Al-Mubarakiya", city: "Kuwait City", text: "A traditional market full of spices, dates, local food, and souvenirs." },
-      { name: "Failaka Island", city: "Failaka", text: "A short ferry ride away, with quiet beaches and ancient Greek ruins." }
+      { name: "Kuwait Towers", city: "Kuwait City", text: "The country's famous landmark, with views over the Gulf. Best visited in the evening.", vibe: "culture", outdoor: true, months: [10, 11, 12, 1, 2, 3, 4] },
+      { name: "Souq Al-Mubarakiya", city: "Kuwait City", text: "A traditional market full of spices, dates, local food, and souvenirs.", vibe: "food", outdoor: false, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+      { name: "Failaka Island", city: "Failaka", text: "A short ferry ride away, with quiet beaches and ancient Greek ruins.", vibe: "beach", outdoor: true, months: [3, 4, 5, 10, 11] }
     ],
     hotels: [
       { name: "Four Seasons Hotel Kuwait at Burj Alshaya", city: "Kuwait City", type: "Luxury city" },
@@ -27,9 +40,9 @@ const COUNTRIES = [
     lon: 46.6753,
     airport: "RUH",
     places: [
-      { name: "Diriyah (At-Turaif)", city: "Riyadh", text: "A UNESCO-listed mud-brick old town with restaurants and evening walks." },
-      { name: "Al-Balad", city: "Jeddah", text: "Jeddah's historic district of coral-stone houses and busy souqs." },
-      { name: "AlUla & Hegra", city: "AlUla", text: "Desert canyons and Nabataean tombs carved into sandstone." }
+      { name: "Diriyah (At-Turaif)", city: "Riyadh", text: "A UNESCO-listed mud-brick old town with restaurants and evening walks.", vibe: "culture", outdoor: true, months: [10, 11, 12, 1, 2, 3, 4] },
+      { name: "Al-Balad", city: "Jeddah", text: "Jeddah's historic district of coral-stone houses and busy souqs.", vibe: "food", outdoor: true, months: [10, 11, 12, 1, 2, 3, 4] },
+      { name: "AlUla & Hegra", city: "AlUla", text: "Desert canyons and Nabataean tombs carved into sandstone.", vibe: "nature", outdoor: true, months: [10, 11, 12, 1, 2, 3] }
     ],
     hotels: [
       { name: "Four Seasons Hotel Riyadh at Kingdom Centre", city: "Riyadh", type: "Luxury city" },
@@ -44,9 +57,9 @@ const COUNTRIES = [
     lon: 50.5860,
     airport: "BAH",
     places: [
-      { name: "Bahrain Fort (Qal'at al-Bahrain)", city: "Manama", text: "A UNESCO site by the sea, beautiful at sunset." },
-      { name: "Bab Al Bahrain & Manama Souq", city: "Manama", text: "The historic gateway and the lanes of shops behind it." },
-      { name: "Bahrain National Museum", city: "Manama", text: "A good introduction to the island's 5,000-year history." }
+      { name: "Bahrain Fort (Qal'at al-Bahrain)", city: "Manama", text: "A UNESCO site by the sea, beautiful at sunset.", vibe: "culture", outdoor: true, months: [10, 11, 12, 1, 2, 3, 4] },
+      { name: "Bab Al Bahrain & Manama Souq", city: "Manama", text: "The historic gateway and the lanes of shops behind it.", vibe: "food", outdoor: false, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+      { name: "Bahrain National Museum", city: "Manama", text: "A good introduction to the island's 5,000-year history.", vibe: "culture", outdoor: false, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
     ],
     hotels: [
       { name: "Four Seasons Hotel Bahrain Bay", city: "Manama", type: "Luxury city" },
@@ -61,9 +74,9 @@ const COUNTRIES = [
     lon: 51.5310,
     airport: "DOH",
     places: [
-      { name: "Museum of Islamic Art", city: "Doha", text: "A striking museum on the Corniche with a large waterfront park." },
-      { name: "Souq Waqif", city: "Doha", text: "A lively market with restaurants, falcons, and shisha cafes." },
-      { name: "Inland Sea (Khor Al Adaid)", city: "Southern Qatar", text: "Where sand dunes meet the sea. Go with a 4x4 tour." }
+      { name: "Museum of Islamic Art", city: "Doha", text: "A striking museum on the Corniche with a large waterfront park.", vibe: "culture", outdoor: false, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+      { name: "Souq Waqif", city: "Doha", text: "A lively market with restaurants, falcons, and shisha cafes.", vibe: "food", outdoor: false, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+      { name: "Inland Sea (Khor Al Adaid)", city: "Southern Qatar", text: "Where sand dunes meet the sea. Go with a 4x4 tour.", vibe: "nature", outdoor: true, months: [11, 12, 1, 2, 3] }
     ],
     hotels: [
       { name: "Mandarin Oriental, Doha", city: "Doha", type: "Luxury city" },
@@ -78,9 +91,9 @@ const COUNTRIES = [
     lon: 54.3773,
     airport: "AUH",
     places: [
-      { name: "Sheikh Zayed Grand Mosque", city: "Abu Dhabi", text: "One of the world's largest mosques, especially beautiful at night." },
-      { name: "Burj Khalifa & Dubai Mall", city: "Dubai", text: "The tallest building in the world, with the fountain show below." },
-      { name: "Jebel Jais", city: "Ras Al Khaimah", text: "The UAE's highest mountain, with cooler air and the world's longest zipline." }
+      { name: "Sheikh Zayed Grand Mosque", city: "Abu Dhabi", text: "One of the world's largest mosques, especially beautiful at night.", vibe: "culture", outdoor: false, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+      { name: "Burj Khalifa & Dubai Mall", city: "Dubai", text: "The tallest building in the world, with the fountain show below.", vibe: "city", outdoor: false, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+      { name: "Jebel Jais", city: "Ras Al Khaimah", text: "The UAE's highest mountain, with cooler air and the world's longest zipline.", vibe: "nature", outdoor: true, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
     ],
     hotels: [
       { name: "Emirates Palace Mandarin Oriental", city: "Abu Dhabi", type: "Luxury palace" },
@@ -95,9 +108,9 @@ const COUNTRIES = [
     lon: 58.3829,
     airport: "MCT",
     places: [
-      { name: "Sultan Qaboos Grand Mosque", city: "Muscat", text: "A stunning mosque with a huge hand-woven carpet." },
-      { name: "Nizwa Fort & Souq", city: "Nizwa", text: "A historic fort and a famous Friday goat market." },
-      { name: "Wahiba Sands", city: "Sharqiya", text: "Golden dunes and overnight desert camps." }
+      { name: "Sultan Qaboos Grand Mosque", city: "Muscat", text: "A stunning mosque with a huge hand-woven carpet.", vibe: "culture", outdoor: false, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+      { name: "Nizwa Fort & Souq", city: "Nizwa", text: "A historic fort and a famous Friday goat market.", vibe: "food", outdoor: true, months: [10, 11, 12, 1, 2, 3, 4] },
+      { name: "Wahiba Sands", city: "Sharqiya", text: "Golden dunes and overnight desert camps.", vibe: "nature", outdoor: true, months: [10, 11, 12, 1, 2, 3] }
     ],
     hotels: [
       { name: "Al Bustan Palace, a Ritz-Carlton Hotel", city: "Muscat", type: "Beach resort" },

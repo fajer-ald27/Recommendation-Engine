@@ -8,42 +8,109 @@
 </head>
 <body>
 
-  <!-- Header: title and short description -->
+  <!-- Shams the mascot is drawn once here and reused with <use href="#shams"> -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="shams" viewBox="0 0 120 120">
+      <g class="shams-rays">
+        <path d="M60 4 L66 20 L54 20 Z M60 116 L54 100 L66 100 Z M4 60 L20 54 L20 66 Z M116 60 L100 66 L100 54 Z
+                 M20 20 L33 27 L27 33 Z M100 100 L87 93 L93 87 Z M100 20 L93 33 L87 27 Z M20 100 L27 87 L33 93 Z"
+              fill="#f59e0b"/>
+      </g>
+      <circle cx="60" cy="60" r="36" fill="#fbbf24"/>
+      <circle cx="40" cy="70" r="6" fill="#fb923c" opacity="0.6"/>
+      <circle cx="80" cy="70" r="6" fill="#fb923c" opacity="0.6"/>
+      <!-- sunglasses -->
+      <rect x="34" y="46" width="22" height="14" rx="6" fill="#1f2937"/>
+      <rect x="64" y="46" width="22" height="14" rx="6" fill="#1f2937"/>
+      <rect x="55" y="50" width="10" height="3" fill="#1f2937"/>
+      <rect x="38" y="49" width="7" height="3" rx="1.5" fill="#fff" opacity="0.6"/>
+      <rect x="68" y="49" width="7" height="3" rx="1.5" fill="#fff" opacity="0.6"/>
+      <!-- smile -->
+      <path d="M46 72 Q60 84 74 72" stroke="#92400e" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
+  <!-- ============ Header: Shams greets you ============ -->
   <header class="hero">
-    <h1>GCC Weekend Explorer</h1>
-    <p class="tagline">
-      Plan a weekend trip anywhere in the GCC: check the weather,
-      find places to visit and hotels, and decide whether to drive or fly.
-    </p>
+    <div class="hero-inner">
+      <svg class="mascot" viewBox="0 0 120 120" aria-hidden="true"><use href="#shams"/></svg>
+      <div class="hero-text">
+        <p class="eyebrow">GCC Weekend Explorer</p>
+        <h1 id="greeting">Hello, Explorer!</h1>
+        <p class="today" id="today"></p>
+        <div class="bubble" id="bubble" aria-live="polite">Marhaba! I'm Shams, your weekend guide.</div>
+        <button class="link-button" id="edit-profile">✏️ Change name or home city</button>
+      </div>
+    </div>
   </header>
 
   <main class="container">
 
-    <!-- 1. Weather: app.js fills #weather-grid with one card per country -->
-    <section class="panel">
+    <!-- ============ Today's top picks ============ -->
+    <section class="panel reveal">
+      <h2>Top places to go today</h2>
+      <p class="muted">Picked using the season and the current weather. Tap one to explore.</p>
+      <div class="top-picks" id="top-picks"></div>
+    </section>
+
+    <!-- ============ Three KPIs, one under the other ============ -->
+    <section class="kpis reveal" aria-label="Weekend at a glance">
+      <div class="kpi">
+        <span class="kpi-icon">🌤️</span>
+        <div>
+          <p class="kpi-label">Best weather right now</p>
+          <p class="kpi-value" id="kpi-weather">--</p>
+          <p class="kpi-sub" id="kpi-weather-sub">Waiting for live weather…</p>
+        </div>
+      </div>
+      <div class="kpi">
+        <span class="kpi-icon">📅</span>
+        <div>
+          <p class="kpi-label">Weekend countdown</p>
+          <p class="kpi-value" id="kpi-weekend">--</p>
+          <p class="kpi-sub" id="kpi-weekend-sub"></p>
+        </div>
+      </div>
+      <div class="kpi">
+        <span class="kpi-icon">🚀</span>
+        <div>
+          <p class="kpi-label" id="kpi-trip-label">Quickest getaway</p>
+          <p class="kpi-value" id="kpi-trip">--</p>
+          <p class="kpi-sub" id="kpi-trip-sub"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Call to action: opens the trip form ============ -->
+    <section class="cta reveal">
+      <h2 id="cta-title">Got the weekend itch? 🧳</h2>
+      <p>Tell Shams where you want to go and get a mini trip plan in seconds.</p>
+      <button class="button button--big" id="open-planner">Plan my escape ✨</button>
+    </section>
+
+    <!-- ============ Weather for every country ============ -->
+    <section class="panel reveal">
       <h2>Weather now across the GCC</h2>
       <p class="muted" id="weather-status">Loading live weather…</p>
       <div class="weather-grid" id="weather-grid"></div>
       <p class="hint">Tap a country to explore it.</p>
     </section>
 
+    <!-- ============ Explore one country ============ -->
     <div id="explore">
       <h2 class="section-title">Explore <span class="country-name"></span></h2>
       <p class="tip" id="weather-tip"></p>
 
-      <!-- 2. Best places to visit -->
       <section>
         <h2 class="subheading">Best places to go</h2>
         <div class="cards" id="places"></div>
       </section>
 
-      <!-- 3. Hotels -->
       <section>
         <h2 class="subheading">Where to stay</h2>
         <div class="hotels" id="hotels"></div>
       </section>
 
-      <!-- 4. Route planner: car vs plane -->
       <section class="panel">
         <h2>Getting there: car or plane?</h2>
         <div class="route-form">
@@ -51,8 +118,9 @@
           <select id="origin"></select>
           <span class="muted">to <strong id="route-destination"></strong></span>
         </div>
+        <div class="route-map" id="route-map"></div>
         <div class="route" id="route"></div>
-        <p class="hint">Times are estimates. Check border rules and flight schedules before you travel.</p>
+        <p class="hint">Tap car or plane to see that trip animated. Times are estimates: check border rules and flight schedules before you travel.</p>
       </section>
     </div>
 
@@ -61,6 +129,56 @@
   <footer class="footer">
     <p>Practice project · GCC Weekend Explorer</p>
   </footer>
+
+  <!-- ============ Popup 1: first-time setup ============ -->
+  <dialog class="modal" id="setup-dialog">
+    <form method="dialog" id="setup-form">
+      <svg class="mascot mascot--small" viewBox="0 0 120 120" aria-hidden="true"><use href="#shams"/></svg>
+      <h2>Marhaba! I'm Shams ☀️</h2>
+      <p class="muted">I'll help you plan weekends across the GCC. First, a quick setup.</p>
+
+      <label for="setup-name">What's your name?</label>
+      <input id="setup-name" maxlength="30" placeholder="Explorer" autocomplete="given-name">
+
+      <label for="setup-home">Where do you live?</label>
+      <select id="setup-home"></select>
+
+      <div class="modal-actions">
+        <button class="button button--ghost" type="button" id="setup-skip">Skip, use defaults</button>
+        <button class="button" value="save">Let's go!</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ Popup 2: trip planner form ============ -->
+  <dialog class="modal" id="plan-dialog">
+    <button class="modal-close" id="close-planner" aria-label="Close">✕</button>
+
+    <form id="plan-form">
+      <h2>Where to this weekend? 🗺️</h2>
+
+      <label for="plan-from">From</label>
+      <select id="plan-from"></select>
+
+      <label for="plan-to">To</label>
+      <select id="plan-to"></select>
+
+      <label for="plan-mode">Travel by</label>
+      <select id="plan-mode">
+        <option value="auto">Let Shams decide</option>
+        <option value="car">🚗 Car</option>
+        <option value="plane">✈️ Plane</option>
+      </select>
+
+      <label for="plan-vibe">Your vibe</label>
+      <select id="plan-vibe"></select>
+
+      <p class="form-error" id="plan-error"></p>
+      <button class="button button--big" type="submit">Make my plan</button>
+    </form>
+
+    <div id="plan-result" hidden></div>
+  </dialog>
 
   <!-- Scripts load last so the page above already exists when they run -->
   <script src="data.js"></script>
