@@ -8,44 +8,53 @@
 </head>
 <body>
 
-  <!-- Header: the big title and short description at the top of the page -->
+  <!-- Header: title and short description -->
   <header class="hero">
     <h1>Kuwait Weekend Explorer</h1>
     <p class="tagline">
-      Discover great places to spend your weekend in Kuwait, from seaside walks
-      to cultural landmarks.
+      Plan a weekend trip from Kuwait anywhere in the GCC: check the weather,
+      find places to visit and hotels, and decide whether to drive or fly.
     </p>
   </header>
 
-  <!-- Main content: the destination cards -->
-  <main class="cards">
+  <main class="container">
 
-    <article class="card">
-      <div class="card-image card-image--sea"></div>
-      <div class="card-body">
-        <h2>Kuwait Towers</h2>
-        <p>Placeholder text: Kuwait's famous landmark with views over the Gulf. A great spot for an evening visit.</p>
-        <a href="#" class="button">Learn more</a>
-      </div>
-    </article>
+    <!-- 1. Weather: app.js fills #weather-grid with one card per country -->
+    <section class="panel">
+      <h2>Weather now across the GCC</h2>
+      <p class="muted" id="weather-status">Loading live weather…</p>
+      <div class="weather-grid" id="weather-grid"></div>
+      <p class="hint">Tap a country to explore it.</p>
+    </section>
 
-    <article class="card">
-      <div class="card-image card-image--market"></div>
-      <div class="card-body">
-        <h2>Souq Al-Mubarakiya</h2>
-        <p>Placeholder text: A traditional market full of spices, local food, and souvenirs. Perfect for a relaxed afternoon.</p>
-        <a href="#" class="button">Learn more</a>
-      </div>
-    </article>
+    <div id="explore">
+      <h2 class="section-title">Explore <span class="country-name"></span></h2>
+      <p class="tip" id="weather-tip"></p>
 
-    <article class="card">
-      <div class="card-image card-image--island"></div>
-      <div class="card-body">
-        <h2>Failaka Island</h2>
-        <p>Placeholder text: A short ferry ride away, with quiet beaches and historical sites to explore.</p>
-        <a href="#" class="button">Learn more</a>
-      </div>
-    </article>
+      <!-- 2. Best places to visit -->
+      <section>
+        <h2 class="subheading">Best places to go</h2>
+        <div class="cards" id="places"></div>
+      </section>
+
+      <!-- 3. Hotels -->
+      <section>
+        <h2 class="subheading">Where to stay</h2>
+        <div class="hotels" id="hotels"></div>
+      </section>
+
+      <!-- 4. Route planner: car vs plane -->
+      <section class="panel">
+        <h2>Getting there: car or plane?</h2>
+        <div class="route-form">
+          <label for="origin">Starting from</label>
+          <select id="origin"></select>
+          <span class="muted">to <strong id="route-destination"></strong></span>
+        </div>
+        <div class="route" id="route"></div>
+        <p class="hint">Times are estimates. Check border rules and flight schedules before you travel.</p>
+      </section>
+    </div>
 
   </main>
 
@@ -53,5 +62,8 @@
     <p>Practice project · Kuwait Weekend Explorer</p>
   </footer>
 
+  <!-- Scripts load last so the page above already exists when they run -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

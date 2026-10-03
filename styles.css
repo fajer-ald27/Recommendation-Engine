@@ -2,10 +2,13 @@
 :root {
   --primary: #0f766e;        /* teal, used for buttons and accents */
   --primary-dark: #115e59;
+  --primary-light: #ccfbf1;
   --text: #1f2937;
   --text-muted: #6b7280;
   --background: #f8fafc;
   --card-bg: #ffffff;
+  --border: #e5e7eb;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -21,10 +24,12 @@ body {
   line-height: 1.6;
 }
 
+.muted { color: var(--text-muted); }
+
 /* ---------- Header / title area ---------- */
 .hero {
   text-align: center;
-  padding: 80px 20px 60px;
+  padding: 72px 20px 80px;
   background: linear-gradient(135deg, #0f766e, #0ea5e9);
   color: white;
 }
@@ -34,33 +39,99 @@ body {
   margin-bottom: 12px;
 }
 
-/* Smaller title on phone-sized screens */
 @media (max-width: 600px) {
   .hero h1 { font-size: 2rem; }
 }
 
 .tagline {
   font-size: 1.15rem;
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
   opacity: 0.9;
 }
 
-/* ---------- Card grid ---------- */
+/* ---------- Page layout ---------- */
+.container {
+  max-width: 1100px;
+  margin: -40px auto 40px;   /* negative top margin overlaps the header slightly */
+  padding: 0 20px;
+}
+
+.panel {
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 40px;
+}
+
+.panel h2 { font-size: 1.3rem; }
+
+.section-title { font-size: 1.8rem; }
+
+.subheading {
+  font-size: 1.2rem;
+  margin: 28px 0 14px;
+}
+
+.hint {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+.tip {
+  display: inline-block;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  padding: 8px 14px;
+  border-radius: 8px;
+  margin-top: 6px;
+}
+.tip:empty { display: none; }
+
+/* ---------- Weather cards ---------- */
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.weather-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: var(--background);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.weather-card:hover { transform: translateY(-2px); border-color: #99f6e4; }
+.weather-card.is-active { border-color: var(--primary); background: #f0fdfa; }
+
+.weather-country { font-weight: 700; }
+.weather-city, .weather-meta { font-size: 0.85rem; color: var(--text-muted); }
+.weather-temp { font-size: 1.5rem; font-weight: 700; margin: 4px 0; }
+
+/* ---------- Place cards ---------- */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
-  max-width: 1100px;
-  margin: -30px auto 60px;  /* negative top margin overlaps the header slightly */
-  padding: 0 20px;
 }
 
 .card {
   background: var(--card-bg);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -71,25 +142,31 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
-/* Colored blocks standing in for photos (placeholders) */
-.card-image {
-  height: 160px;
-}
-.card-image--sea    { background: linear-gradient(135deg, #38bdf8, #0369a1); }
-.card-image--market { background: linear-gradient(135deg, #fbbf24, #b45309); }
-.card-image--island { background: linear-gradient(135deg, #34d399, #0f766e); }
+/* Colored blocks standing in for photos, one color per country */
+.card-image { height: 120px; }
+.card-image--KW { background: linear-gradient(135deg, #38bdf8, #0369a1); }
+.card-image--SA { background: linear-gradient(135deg, #4ade80, #166534); }
+.card-image--BH { background: linear-gradient(135deg, #fb7185, #9f1239); }
+.card-image--QA { background: linear-gradient(135deg, #c084fc, #6b21a8); }
+.card-image--AE { background: linear-gradient(135deg, #fbbf24, #b45309); }
+.card-image--OM { background: linear-gradient(135deg, #f87171, #7f1d1d); }
 
 .card-body {
-  padding: 24px;
+  padding: 20px 24px 24px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
-.card-body h2 {
-  font-size: 1.3rem;
-  margin-bottom: 8px;
+.card-city {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+  font-weight: 600;
 }
+
+.card-body h3 { font-size: 1.2rem; margin-bottom: 8px; }
 
 .card-body p {
   color: var(--text-muted);
@@ -97,8 +174,92 @@ body {
   flex-grow: 1;  /* pushes the button to the bottom so all buttons line up */
 }
 
-/* ---------- Button ---------- */
+/* ---------- Hotels ---------- */
+.hotels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.hotel {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.hotel h3 { font-size: 1.05rem; }
+.hotel p { color: var(--text-muted); font-size: 0.9rem; }
+
+.tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-bottom: 4px;
+}
+
+/* ---------- Route planner ---------- */
+.route-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.route-form label { font-weight: 600; }
+
+.route-form select {
+  font: inherit;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+}
+
+.route {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.route-option {
+  position: relative;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.route-option.is-best { border-color: var(--primary); background: #f0fdfa; }
+.route-option p { color: var(--text-muted); margin-bottom: 12px; }
+.route-option .route-big { font-size: 1.8rem; font-weight: 700; color: var(--text); margin: 4px 0; }
+
+.route-reason { grid-column: 1 / -1; margin-top: 0; }
+
+.badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+/* ---------- Buttons ---------- */
 .button {
+  display: inline-block;
   align-self: flex-start;
   background: var(--primary);
   color: white;
@@ -106,12 +267,20 @@ body {
   padding: 10px 20px;
   border-radius: 8px;
   font-weight: 600;
+  white-space: nowrap;
   transition: background 0.2s ease;
 }
 
-.button:hover {
-  background: var(--primary-dark);
+.button:hover { background: var(--primary-dark); }
+
+.button--ghost {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 8px 16px;
 }
+
+.button--ghost:hover { background: var(--primary); color: white; }
 
 /* ---------- Footer ---------- */
 .footer {
