@@ -1,6 +1,6 @@
-# Kuwait Weekend Explorer
+# GCC Weekend Explorer
 
-A one-page practice website for planning weekend trips from Kuwait across the GCC
+A one-page practice website for planning weekend trips across the GCC
 (Kuwait, Saudi Arabia, Bahrain, Qatar, UAE, Oman).
 
 ## Features
