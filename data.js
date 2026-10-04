@@ -17,6 +17,7 @@ const VIBES = {
 const COUNTRIES = [
   {
     id: "KW",
+    typicalHighs: [19, 22, 27, 33, 41, 45, 46, 46, 43, 37, 27, 21],   // usual daytime high, January to December (°C)
     name: "Kuwait",
     capital: "Kuwait City",
     lat: 29.3759,
@@ -34,6 +35,7 @@ const COUNTRIES = [
   },
   {
     id: "SA",
+    typicalHighs: [20, 23, 28, 33, 40, 43, 44, 44, 41, 35, 27, 22],   // usual daytime high, January to December (°C)
     name: "Saudi Arabia",
     capital: "Riyadh",
     lat: 24.7136,
@@ -51,6 +53,7 @@ const COUNTRIES = [
   },
   {
     id: "BH",
+    typicalHighs: [20, 21, 25, 29, 34, 36, 38, 38, 36, 33, 28, 22],   // usual daytime high, January to December (°C)
     name: "Bahrain",
     capital: "Manama",
     lat: 26.2285,
@@ -68,6 +71,7 @@ const COUNTRIES = [
   },
   {
     id: "QA",
+    typicalHighs: [22, 23, 27, 32, 38, 41, 42, 41, 39, 35, 29, 24],   // usual daytime high, January to December (°C)
     name: "Qatar",
     capital: "Doha",
     lat: 25.2854,
@@ -85,6 +89,7 @@ const COUNTRIES = [
   },
   {
     id: "AE",
+    typicalHighs: [24, 25, 28, 32, 37, 39, 41, 41, 39, 35, 30, 26],   // usual daytime high, January to December (°C)
     name: "UAE",
     capital: "Abu Dhabi",
     lat: 24.4539,
@@ -102,6 +107,7 @@ const COUNTRIES = [
   },
   {
     id: "OM",
+    typicalHighs: [25, 26, 29, 34, 38, 40, 38, 36, 35, 34, 30, 27],   // usual daytime high, January to December (°C)
     name: "Oman",
     capital: "Muscat",
     lat: 23.5880,

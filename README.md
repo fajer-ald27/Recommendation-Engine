@@ -10,7 +10,8 @@ A one-page practice website for planning weekend trips across the GCC
 - **Today's top 3 places**: ranked using the season and the current weather
 - **3 KPIs**: best weather right now, weekend countdown, and your quickest getaway
 - **"Plan my escape" form**: dropdown menus for From, To, Travel by, and Vibe, which build a mini trip plan
-- **Live weather** for every GCC capital (from the free [Open-Meteo](https://open-meteo.com) API, no account needed)
+- **Live weather** for every GCC capital (from the free [Open-Meteo](https://open-meteo.com) API, no account needed). If it can't load, the page shows typical daytime highs for the month instead.
+- **Light and dark mode**: follows your device setting
 - **Best places and hotels** for each country, with map links
 - **Car or plane?**: estimates both, recommends one, and animates the trip
 

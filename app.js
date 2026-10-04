@@ -24,8 +24,12 @@ function pickRandom(list) {
   return list[Math.floor(Math.random() * list.length)];
 }
 
+const monthName = () => new Date().toLocaleDateString("en-GB", { month: "long" });
+
 // Turns a weather code (from Open-Meteo) into words and an emoji.
+// Typical (not live) weather has no code.
 function describeWeather(code) {
+  if (code == null) return [`Typical ${monthName()} high`, "📊"];
   if (code === 0) return ["Clear", "☀️"];
   if (code <= 3) return ["Partly cloudy", "⛅"];
   if (code <= 48) return ["Foggy", "🌫️"];
@@ -122,9 +126,14 @@ async function loadWeather() {
     results.forEach((r, i) => { weather[COUNTRIES[i].id] = r.current; });
     $("#weather-status").textContent = "Live weather from Open-Meteo.";
   } catch (error) {
+    // No live weather (offline, or blocked): fall back to the usual daytime high for this month
     weatherFailed = true;
+    const month = new Date().getMonth();
+    COUNTRIES.forEach((c) => {
+      weather[c.id] = { temperature_2m: c.typicalHighs[month], weather_code: null, typical: true };
+    });
     $("#weather-status").textContent =
-      "Couldn't load live weather. Check your internet connection and refresh.";
+      `Live weather isn't available right now, so these are typical ${monthName()} daytime highs.`;
   }
   renderWeather();
   renderTip();
@@ -132,9 +141,10 @@ async function loadWeather() {
   renderKpis();
 
   const coolest = coolestCountry();
-  if (coolest) {
-    say(`It's ${Math.round(weather[coolest.id].temperature_2m)}°C in ${coolest.capital}, the coolest capital right now. 😎`);
-  }
+  const w = weather[coolest.id];
+  say(w.typical
+    ? `${coolest.capital} is usually the coolest capital in ${monthName()}, at about ${w.temperature_2m}°C. 😎`
+    : `It's ${Math.round(w.temperature_2m)}°C in ${coolest.capital}, the coolest capital right now. 😎`);
 }
 
 function renderWeather() {
@@ -143,7 +153,7 @@ function renderWeather() {
     const [label, icon] = w ? describeWeather(w.weather_code)
       : weatherFailed ? ["Unavailable", "❔"] : ["Loading…", "⏳"];
     const temp = w ? `${Math.round(w.temperature_2m)}°C` : "--";
-    const wind = w ? `Wind ${Math.round(w.wind_speed_10m)} km/h` : "";
+    const wind = w && w.wind_speed_10m != null ? `Wind ${Math.round(w.wind_speed_10m)} km/h` : "";
     const active = c.id === selected.id ? " is-active" : "";
     return `
       <button class="weather-card pop-in${active}" style="--i:${i}" data-id="${c.id}">
@@ -157,9 +167,11 @@ function renderWeather() {
 
 function renderTip() {
   const w = weather[selected.id];
-  $("#weather-tip").textContent = w
-    ? `${selected.capital} now: ${Math.round(w.temperature_2m)}°C. ${weatherTip(w.temperature_2m)}`
-    : "";
+  if (!w) { $("#weather-tip").textContent = ""; return; }
+  const intro = w.typical
+    ? `${selected.capital} in ${monthName()}: usually about ${w.temperature_2m}°C.`
+    : `${selected.capital} now: ${Math.round(w.temperature_2m)}°C.`;
+  $("#weather-tip").textContent = `${intro} ${weatherTip(w.temperature_2m)}`;
 }
 
 function coolestCountry() {
@@ -203,7 +215,7 @@ function renderTopPicks() {
     const reasons = [
       place.months.includes(month) ? "In season" : "Off season",
       place.outdoor ? "Outdoors" : "Indoors",
-      w ? `${Math.round(w.temperature_2m)}°C in ${country.capital}` : null
+      w ? `${w.typical ? "Usually " : ""}${Math.round(w.temperature_2m)}°C in ${country.capital}` : null
     ].filter(Boolean).join(" · ");
     return `
       <button class="pick pop-in" style="--i:${i}" data-id="${country.id}">
@@ -224,11 +236,9 @@ function renderKpis() {
     const w = weather[coolest.id];
     $("#kpi-weather").innerHTML = `${coolest.name} · <span class="count">0</span>°C`;
     countUp($("#kpi-weather .count"), Math.round(w.temperature_2m));
-    $("#kpi-weather-sub").textContent =
-      `${describeWeather(w.weather_code)[0]} in ${coolest.capital}, the coolest GCC capital right now`;
-  } else if (weatherFailed) {
-    $("#kpi-weather").textContent = "Unavailable";
-    $("#kpi-weather-sub").textContent = "Live weather couldn't be loaded";
+    $("#kpi-weather-sub").textContent = w.typical
+      ? `Typical ${monthName()} high in ${coolest.capital}, usually the coolest GCC capital this month`
+      : `${describeWeather(w.weather_code)[0]} in ${coolest.capital}, the coolest GCC capital right now`;
   }
 
   // 2. Weekend countdown (the GCC weekend is Friday and Saturday)
@@ -458,7 +468,9 @@ function makePlan(event) {
   const hotel = (vibe === "beach" && to.hotels.find((h) => /beach|seafront/i.test(h.type))) || to.hotels[0];
 
   const w = weather[to.id];
-  const weatherLine = w
+  const weatherLine = w && w.typical
+    ? `Usually about ${w.temperature_2m}°C in ${to.capital} in ${monthName()}. ${weatherTip(w.temperature_2m)}`
+    : w
     ? `${Math.round(w.temperature_2m)}°C and ${describeWeather(w.weather_code)[0].toLowerCase()} in ${to.capital}. ${weatherTip(w.temperature_2m)}`
     : "Live weather isn't available right now. Check the forecast before you go.";
   const modeNote = mode !== t.best
@@ -512,28 +524,7 @@ function applyProfile(isNew) {
   if (isNew) say(`Nice to meet you, ${profile.name}! Here's what's good this weekend. 🌴`);
 }
 
-// ---------- Scroll reveal animation ----------
-
-function setUpReveal() {
-  const sections = document.querySelectorAll(".reveal");
-  if (reduceMotion || !("IntersectionObserver" in window)) {
-    sections.forEach((s) => s.classList.add("is-visible"));
-    return;
-  }
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  sections.forEach((s) => observer.observe(s));
-}
-
 // ---------- Start ----------
-
-document.documentElement.classList.add("js");
 
 // Fill the dropdown menus
 $("#origin").innerHTML = countryOptions(false);
@@ -591,7 +582,6 @@ const firstPick = topPicks(COUNTRIES.length).find((p) => p.country.id !== profil
 selectCountry(firstPick.country.id);
 renderTopPicks();
 renderKpis();
-setUpReveal();
 say(`Marhaba, ${profile.name}! I'm Shams, your weekend guide. ☀️`);
 loadWeather();
 

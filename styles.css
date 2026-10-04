@@ -9,7 +9,36 @@
   --background: #f8fafc;
   --card-bg: #ffffff;
   --border: #e5e7eb;
+  --border-strong: #cbd5e1;
   --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --link: #0f766e;            /* teal text and outlines */
+  --tip-bg: #ccfbf1;
+  --tip-fg: #115e59;
+  --active-bg: #f0fdfa;       /* selected weather card / recommended route */
+  --pick-bg: #fffbeb;
+  --map-a: #f0f9ff;
+  --map-b: #fefce8;
+  --bubble-bg: #ffffff;
+  --bubble-fg: #1f2937;
+  --error: #b91c1c;
+}
+
+/* Dark mode: same names, darker values (follows the phone or computer setting) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --text: #e2eced; --text-muted: #9db0b3; --background: #0e1a1c; --card-bg: #162427;
+    --border: #25393d; --border-strong: #3b5459; --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --link: #2dd4bf; --tip-bg: #12403d; --tip-fg: #ccfbf1; --active-bg: #11312f;
+    --pick-bg: #2a2414; --map-a: #10262e; --map-b: #1f2416; --bubble-bg: #162427;
+    --bubble-fg: #e2eced; --error: #f87171; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --text: #e2eced; --text-muted: #9db0b3; --background: #0e1a1c; --card-bg: #162427;
+  --border: #25393d; --border-strong: #3b5459; --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --link: #2dd4bf; --tip-bg: #12403d; --tip-fg: #ccfbf1; --active-bg: #11312f;
+  --pick-bg: #2a2414; --map-a: #10262e; --map-b: #1f2416; --bubble-bg: #162427;
+  --bubble-fg: #e2eced; --error: #f87171; color-scheme: dark;
 }
 
 * {
@@ -69,8 +98,8 @@ body {
 .bubble {
   position: relative;
   display: inline-block;
-  background: white;
-  color: var(--text);
+  background: var(--bubble-bg);
+  color: var(--bubble-fg);
   padding: 12px 18px;
   border-radius: 16px;
   font-weight: 500;
@@ -83,7 +112,7 @@ body {
   left: -8px;
   top: 18px;
   border: 8px solid transparent;
-  border-right-color: white;
+  border-right-color: var(--bubble-bg);
   border-left: 0;
 }
 .bubble.is-talking { animation: bubble-pop 0.4s ease-out; }
@@ -125,7 +154,7 @@ body {
   .hero h1 { font-size: 1.9rem; }
   .mascot { width: 110px; height: 110px; }
   .bubble::before { left: 50%; top: -8px; transform: translateX(-50%);
-    border: 8px solid transparent; border-bottom-color: white; border-top: 0; }
+    border: 8px solid transparent; border-bottom-color: var(--bubble-bg); border-top: 0; }
   .link-button { margin: 14px auto 0; }
 }
 
@@ -161,8 +190,8 @@ body {
 
 .tip {
   display: inline-block;
-  background: var(--primary-light);
-  color: var(--primary-dark);
+  background: var(--tip-bg);
+  color: var(--tip-fg);
   padding: 8px 14px;
   border-radius: 8px;
   margin-top: 6px;
@@ -189,7 +218,7 @@ body {
   border: 2px solid var(--border);
   border-radius: 14px;
   padding: 18px 18px 16px;
-  background: linear-gradient(160deg, #fffbeb, #ffffff 60%);
+  background: linear-gradient(160deg, var(--pick-bg), var(--card-bg) 60%);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .pick:hover { transform: translateY(-4px); border-color: var(--sun); box-shadow: var(--shadow); }
@@ -203,7 +232,7 @@ body {
   color: var(--sun);
   opacity: 0.8;
 }
-.pick-country { padding-right: 44px; font-size: 0.8rem; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 0.04em; }
+.pick-country { padding-right: 44px; font-size: 0.8rem; font-weight: 600; color: var(--link); text-transform: uppercase; letter-spacing: 0.04em; }
 .pick-name { font-size: 1.15rem; font-weight: 700; margin: 2px 40px 6px 0; }
 .pick-why { font-size: 0.85rem; color: var(--text-muted); }
 
@@ -284,9 +313,9 @@ body {
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-.weather-card:hover { transform: translateY(-2px); border-color: #99f6e4; }
+.weather-card:hover { transform: translateY(-2px); border-color: var(--link); }
 .weather-card:hover .weather-icon { display: inline-block; animation: bounce 0.6s ease; }
-.weather-card.is-active { border-color: var(--primary); background: #f0fdfa; }
+.weather-card.is-active { border-color: var(--link); background: var(--active-bg); }
 
 .weather-country { font-weight: 700; }
 .weather-city, .weather-meta { font-size: 0.85rem; color: var(--text-muted); }
@@ -334,7 +363,7 @@ body {
   left: 16px;
   bottom: 12px;
   background: rgba(255, 255, 255, 0.9);
-  color: var(--text);
+  color: #1f2937;
   font-size: 0.75rem;
   font-weight: 600;
   padding: 3px 10px;
@@ -352,7 +381,7 @@ body {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--primary);
+  color: var(--link);
   font-weight: 600;
 }
 
@@ -402,8 +431,8 @@ body {
   display: inline-block;
   font-size: 0.75rem;
   font-weight: 600;
-  background: var(--primary-light);
-  color: var(--primary-dark);
+  background: var(--tip-bg);
+  color: var(--tip-fg);
   padding: 2px 8px;
   border-radius: 999px;
   margin-bottom: 4px;
@@ -423,16 +452,16 @@ body {
 select, input {
   font: inherit;
   padding: 9px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
-  background: white;
+  background: var(--card-bg);
   color: var(--text);
 }
-select:focus, input:focus { outline: 3px solid var(--primary-light); border-color: var(--primary); }
+select:focus, input:focus { outline: 3px solid var(--tip-bg); border-color: var(--link); }
 
 /* Animated route drawing */
 .route-map {
-  background: linear-gradient(180deg, #f0f9ff, #fefce8);
+  background: linear-gradient(180deg, var(--map-a), var(--map-b));
   border-radius: 14px;
   padding: 12px;
   margin-bottom: 16px;
@@ -441,7 +470,7 @@ select:focus, input:focus { outline: 3px solid var(--primary-light); border-colo
 .route-map--small { margin: 12px 0; padding: 6px; }
 
 .route-svg { display: block; width: 100%; max-width: 720px; height: auto; margin: 0 auto; }
-.route-track { fill: none; stroke: #cbd5e1; stroke-width: 4; stroke-dasharray: 6 10; stroke-linecap: round; }
+.route-track { fill: none; stroke: var(--border-strong); stroke-width: 4; stroke-dasharray: 6 10; stroke-linecap: round; }
 .route-line {
   fill: none;
   stroke-width: 5;
@@ -452,15 +481,15 @@ select:focus, input:focus { outline: 3px solid var(--primary-light); border-colo
 }
 .route-line--car { stroke: var(--primary); }
 .route-line--plane { stroke: #0ea5e9; }
-.route-dot { fill: white; stroke: var(--primary); stroke-width: 4; }
-.route-dot--end { fill: var(--sun); stroke: white; }
+.route-dot { fill: var(--card-bg); stroke: var(--link); stroke-width: 4; }
+.route-dot--end { fill: var(--sun); stroke: var(--card-bg); }
 .route-pulse { fill: none; stroke: var(--sun); stroke-width: 3; transform-origin: 540px 120px; animation: pulse 1.8s ease-out infinite; }
 .route-label { font-size: 15px; font-weight: 700; fill: var(--text); }
 .vehicle { font-size: 30px; }
 
 .toggle {
   display: inline-flex;
-  background: white;
+  background: var(--card-bg);
   border-radius: 999px;
   padding: 4px;
   box-shadow: var(--shadow);
@@ -492,8 +521,8 @@ select:focus, input:focus { outline: 3px solid var(--primary-light); border-colo
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.route-option.is-best { border-color: var(--primary); background: #f0fdfa; }
-.route-option.is-showing { box-shadow: 0 0 0 4px var(--primary-light); transform: translateY(-2px); }
+.route-option.is-best { border-color: var(--link); background: var(--active-bg); }
+.route-option.is-showing { box-shadow: 0 0 0 4px var(--tip-bg); transform: translateY(-2px); }
 .route-option p { color: var(--text-muted); margin-bottom: 12px; }
 .route-option .route-big { font-size: 1.8rem; font-weight: 700; color: var(--text); margin: 4px 0; }
 .route-reason { grid-column: 1 / -1; margin-top: 0; }
@@ -532,8 +561,8 @@ select:focus, input:focus { outline: 3px solid var(--primary-light); border-colo
 
 .button--ghost {
   background: transparent;
-  color: var(--primary);
-  border: 2px solid var(--primary);
+  color: var(--link);
+  border: 2px solid var(--link);
   padding: 8px 16px;
 }
 .button--ghost:hover { background: var(--primary); color: white; }
@@ -549,6 +578,7 @@ select:focus, input:focus { outline: 3px solid var(--primary-light); border-colo
   width: min(460px, calc(100% - 32px));
   max-height: calc(100% - 32px);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+  background: var(--card-bg);
   color: var(--text);
 }
 .modal[open] { animation: modal-in 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2); }
@@ -561,6 +591,7 @@ select:focus, input:focus { outline: 3px solid var(--primary-light); border-colo
 .modal .button--big { margin-top: 18px; align-self: stretch; text-align: center; }
 
 .modal-close {
+  color: var(--text);
   position: absolute;
   top: 14px;
   right: 14px;
@@ -582,7 +613,7 @@ select:focus, input:focus { outline: 3px solid var(--primary-light); border-colo
   flex-wrap: wrap;
 }
 
-.form-error { color: #b91c1c; font-weight: 600; min-height: 1.2em; }
+.form-error { color: var(--error); font-weight: 600; min-height: 1.2em; }
 
 #plan-result > h2 { margin-right: 24px; }
 #plan-result > .muted { text-align: center; }
@@ -596,7 +627,7 @@ select:focus, input:focus { outline: 3px solid var(--primary-light); border-colo
 }
 .plan-step > span { font-size: 1.4rem; }
 .plan-step p { color: var(--text-muted); font-size: 0.92rem; }
-.plan-step a { color: var(--primary); font-weight: 600; }
+.plan-step a { color: var(--link); font-weight: 600; }
 
 /* ---------- Footer ---------- */
 .footer {
@@ -608,9 +639,10 @@ select:focus, input:focus { outline: 3px solid var(--primary-light); border-colo
 
 /* ---------- Animations ---------- */
 
-/* Sections fade up as you scroll to them (only when JavaScript is running) */
-.js .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.js .reveal.is-visible { opacity: 1; transform: none; }
+/* Sections slide up slightly when the page opens (they are never hidden) */
+.reveal { animation: rise 0.7s ease-out both; }
+.reveal + .reveal { animation-delay: 0.1s; }
+@keyframes rise { from { transform: translateY(20px); } }
 
 /* Cards appear one after another: --i is set in app.js (0, 1, 2…) */
 .pop-in { animation: pop-in 0.5s ease-out both; animation-delay: calc(var(--i, 0) * 90ms); }
