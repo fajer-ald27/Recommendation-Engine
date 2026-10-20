@@ -22,6 +22,12 @@ A one-page practice website for planning weekend trips across the GCC
 - `data.js`: all the content (countries, places with their vibe and best months, hotels, distances, and flight times). Edit this file to change what the site shows.
 - `app.js`: the logic (setup, Shams' messages, weather, top picks, KPIs, car vs plane, the trip planner form)
 
+## Live website
+
+Hosted on GitHub Pages: https://fajer-ald27.github.io/Recommendation-Engine/
+
+Every push to the `claude/kuwait-weekend-explorer-hhaujo` branch updates the live site within a minute or two.
+
 ## Run it locally
 
 **Option 1: just open the file**
